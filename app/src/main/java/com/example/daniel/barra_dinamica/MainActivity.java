@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         CoordinatorLayout cluno = new CoordinatorLayout(this);
         cluno.setBackgroundColor(Color.RED);
 
-
         AppBarLayout appbar = new AppBarLayout(this);
 
         collapsingToolbarLayout = new CollapsingToolbarLayout(this);//(CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
@@ -110,7 +109,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolbar.setTitleTextColor(
                 Color.BLACK
         );
-        toolbar.setPadding(0,50,0,0);
+        toolbar.setPadding(0,80,0,0);
+        toolbar.setMinimumHeight(90);
 
         ////////////////////////////////////////////////////////////////
         NestedScrollView nestedScroll = new NestedScrollView(this);
@@ -194,6 +194,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.show();
+        actionBar.collapseActionView();
     }
 
     private void dynamicToolbarColor() {
