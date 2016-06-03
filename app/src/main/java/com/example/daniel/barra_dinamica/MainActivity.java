@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,58 +14,64 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.view.Gravity;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
-import android.view.View;
-import android.widget.FrameLayout;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
     CollapsingToolbarLayout collapsingToolbarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.setTheme(android.R.style.Theme_Holo_Light_NoActionBar);
 
         DisplayMetrics met = getResources().getDisplayMetrics();
         CoordinatorLayout cluno = new CoordinatorLayout(this);
         cluno.setBackgroundColor(Color.RED);
 
+<<<<<<< HEAD
+=======
+        // AppBarLayout
+        CoordinatorLayout.LayoutParams appBarParams = new CoordinatorLayout.LayoutParams(
+                CoordinatorLayout.LayoutParams.MATCH_PARENT,
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 250, met)
+        );
+>>>>>>> actionbar_fix
         AppBarLayout appbar = new AppBarLayout(this);
+        appbar.setLayoutParams(appBarParams);
 
-        collapsingToolbarLayout = new CollapsingToolbarLayout(this);//(CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-
-        //////////////////////// params collapsingToolbarLayout ////////////////////////////////
-        AppBarLayout.LayoutParams paramsbar = new AppBarLayout.LayoutParams(
+        // CollapsingToolbarLayout
+        collapsingToolbarLayout = new CollapsingToolbarLayout(this);
+        AppBarLayout.LayoutParams collapParams = new AppBarLayout.LayoutParams(
                 AppBarLayout.LayoutParams.MATCH_PARENT,
                 AppBarLayout.LayoutParams.MATCH_PARENT
         );
-
-        paramsbar.setScrollFlags(
-                AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
+        
+        // Viendo el xml de ejemplos anteriores la solucion simple era 
+        // agregar estos 2 flags para que funcionara
+        // este codigo es equivalente a app:layout_scrollFlags="scroll|exitUnitCollapsed"
+        collapParams.setScrollFlags(
+                AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
         );
-
         collapsingToolbarLayout.setContentScrim(
                 getResources().getDrawable(
                         R.mipmap.ic_launcher
                 )
         );
-
-        collapsingToolbarLayout.setLayoutParams(paramsbar);
+        collapsingToolbarLayout.setLayoutParams(collapParams);
         collapsingToolbarLayout.setTitle("holaaaa");
 
-
-        ////////////////////////////////////////////////////////////////////////
-        /////////////////////  parametros imagen  //////////////////////////////
-        CollapsingToolbarLayout.LayoutParams paramsimg = new CollapsingToolbarLayout.LayoutParams(
+        // ImageView
+        CollapsingToolbarLayout.LayoutParams imgParams = new CollapsingToolbarLayout.LayoutParams(
                 CollapsingToolbarLayout.LayoutParams.MATCH_PARENT,
                 CollapsingToolbarLayout.LayoutParams.MATCH_PARENT
         );
-        paramsimg.setCollapseMode(
+
+        imgParams.setCollapseMode(
                 CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PARALLAX
         );
 
@@ -78,114 +83,63 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         R.mipmap.ic_launcher
                 )
         );
-        img.setLayoutParams(paramsimg);
-        ////////////////////////////////////////////////////////////////////////////
-        ////////////////////////  toolbar    ///////////////////////////////////////////////////
-        CollapsingToolbarLayout.LayoutParams paramstoolbar = new CollapsingToolbarLayout.LayoutParams(
-                CollapsingToolbarLayout.LayoutParams.MATCH_PARENT,
-                R.attr.actionBarSize
-        );
+        img.setLayoutParams(imgParams);
 
-        paramstoolbar.setCollapseMode(
+        //Toolbar
+        int toolbarHeight = Utils.getActionBarSize(this);
+        CollapsingToolbarLayout.LayoutParams toolbarParams = new CollapsingToolbarLayout.LayoutParams(
+                CollapsingToolbarLayout.LayoutParams.MATCH_PARENT,
+                toolbarHeight
+        );
+        toolbarParams.setCollapseMode(
                 CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PIN
         );
         Toolbar toolbar = new Toolbar(this);//(Toolbar) findViewById(R.id.toolbar);
-        toolbar.setMinimumHeight(50);
-        toolbar.canShowOverflowMenu();
-        toolbar.collapseActionView();
-        toolbar.setVisibility(View.VISIBLE);
-        toolbar.setLogo(
-                getResources().getDrawable(
-                        R.mipmap.ic_launcher
-                )
-        );
-        toolbar.setNavigationIcon(
-                getResources().getDrawable(
-                        R.mipmap.ic_launcher
-                )
-        );
+        toolbar.setLayoutParams(toolbarParams);
 
-
-        toolbar.setTitleTextColor(
-                Color.BLACK
+        // NestedScrollView
+        CoordinatorLayout.LayoutParams nestedScrollParams = new CoordinatorLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
         );
+<<<<<<< HEAD
         toolbar.setPadding(0,80,0,0);
         toolbar.setMinimumHeight(90);
 
         ////////////////////////////////////////////////////////////////
+=======
+        nestedScrollParams.setBehavior(new AppBarLayout.ScrollingViewBehavior());
+>>>>>>> actionbar_fix
         NestedScrollView nestedScroll = new NestedScrollView(this);
-        nestedScroll.setClipToPadding(false);
-        FrameLayout frame = new FrameLayout(this);
-        CardView cardView = new CardView(this);
+        nestedScroll.setLayoutParams(nestedScrollParams);
 
-        FrameLayout.LayoutParams paramscard = new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT
-        );
-        cardView.setCardElevation(530);
-        cardView.setUseCompatPadding(true);
+        // Linear Layout
+        LinearLayout linearLayout = new LinearLayout(this);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
 
-        LinearLayout ll = new LinearLayout(this);
-        ll.setBackgroundDrawable(
-                getResources().getDrawable(
-                        R.mipmap.ic_launcher
-                )
-        );
-        CoordinatorLayout.LayoutParams paramsflb = new CoordinatorLayout.LayoutParams(
-                CoordinatorLayout.LayoutParams.MATCH_PARENT,
-                CoordinatorLayout.LayoutParams.WRAP_CONTENT
-        );
-
-
-        FloatingActionButton faboton = new FloatingActionButton(this);
-        paramsflb.anchorGravity = Gravity.BOTTOM;
-
-        faboton.setOnClickListener(this);
-        ///////////////////////////////////////////////////////////////////////////////////////////);
-
-        /////////////////////////////////////////////////////////////////////////////////7
-
-        cluno.addView(faboton);
-
-        cardView.addView(
-                ll,
-                CardView.LayoutParams.MATCH_PARENT,
-                CardView.LayoutParams.WRAP_CONTENT
-        );
-        frame.addView(cardView);
+        // Adding views
+        cluno.addView(nestedScroll);
 
         nestedScroll.addView(
-                frame,
+                linearLayout,
                 NestedScrollView.LayoutParams.MATCH_PARENT,
                 NestedScrollView.LayoutParams.WRAP_CONTENT
         );
 
-        cluno.addView(
-                nestedScroll,
-                CollapsingToolbarLayout.LayoutParams.MATCH_PARENT,
-                CollapsingToolbarLayout.LayoutParams.MATCH_PARENT
-        );
-
-
-
-        collapsingToolbarLayout.addView(
-                toolbar,
-                Toolbar.LayoutParams.MATCH_PARENT,
-                met.heightPixels * 10 / 100
-                );
-
-
-        appbar.addView(
-                collapsingToolbarLayout,
-                AppBarLayout.LayoutParams.MATCH_PARENT,
-                AppBarLayout.LayoutParams.MATCH_PARENT
-        );
-
-        cluno.addView(
-                appbar,
-                AppBarLayout.LayoutParams.MATCH_PARENT,
-                met.heightPixels * 43 / 100
-        );
+        for (int i = 0; i < 10; i++) {
+            ImageView testImage = new ImageView(this);
+            testImage.setBackgroundDrawable(getResources().getDrawable(R.mipmap.ic_launcher));
+            linearLayout.addView(
+                    testImage,
+                    CardView.LayoutParams.MATCH_PARENT,
+                    CardView.LayoutParams.WRAP_CONTENT
+            );
+        }
+        // Rama del ActionBar
+        cluno.addView(appbar);
+        appbar.addView(collapsingToolbarLayout);
+        collapsingToolbarLayout.addView(img);
+        collapsingToolbarLayout.addView(toolbar);
 
         dynamicToolbarColor();
         toolbarTextAppernce();
@@ -197,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         actionBar.show();
         actionBar.collapseActionView();
     }
+
 
     private void dynamicToolbarColor() {
         Bitmap bitmap = BitmapFactory.decodeResource(
@@ -270,12 +225,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-    @Override
-    public void onClick(View v) {
-
-    }
-
-
 }
